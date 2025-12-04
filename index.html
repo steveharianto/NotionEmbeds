@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Current Date Widget</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-slate-100">
+  <div class="w-full max-w-md px-6">
+    <div class="bg-white rounded-2xl shadow-md px-6 py-5 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Today</p>
+        <p id="current-date" class="mt-1 text-xl font-semibold text-slate-900">
+          <!-- Filled by JavaScript -->
+        </p>
+      </div>
+      <div class="flex flex-col items-end text-right">
+        <p id="current-time" class="text-2xl font-bold leading-tight text-slate-900">
+          <!-- Filled by JavaScript -->
+        </p>
+        <p class="text-xs text-slate-500 mt-1">Local time</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+
+      const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
+      const timeOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+
+      const dateStr = now.toLocaleDateString(undefined, dateOptions);
+      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
+
+      document.getElementById('current-date').textContent = dateStr;
+      document.getElementById('current-time').textContent = timeStr;
+    }
+
+    // Initial render
+    updateDateTime();
+    // Update every second
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+</html>
