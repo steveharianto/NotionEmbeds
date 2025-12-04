@@ -8,19 +8,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-transparent">
-  <div class="w-full max-w-md px-6">
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md px-6 py-5 flex items-center justify-between gap-4">
-      <div>
-        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Today</p>
-        <p id="current-date" class="mt-1 text-xl font-semibold text-slate-900">
-          <!-- Filled by JavaScript -->
-        </p>
+  <div class="w-full max-w-md px-4">
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md px-6 py-5 flex items-center justify-between">
+      <div class="text-left">
+        <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Today</p>
+        <p id="date-text" class="mt-1 text-lg font-medium text-slate-900"></p>
       </div>
-      <div class="flex flex-col items-end text-right">
-        <p id="current-time" class="text-2xl font-bold leading-tight text-slate-900">
-          <!-- Filled by JavaScript -->
-        </p>
-        <p class="text-xs text-slate-500 mt-1">Local time</p>
+      <div class="text-right">
+        <p id="time-text" class="text-xl font-bold text-slate-900"></p>
       </div>
     </div>
   </div>
@@ -29,28 +24,39 @@
     function updateDateTime() {
       const now = new Date();
 
-      const dateOptions = {
+      const dateStr = now.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
-      };
+      });
 
-      const timeOptions = {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      };
+      const timeStr =
+        String(now.getHours()).padStart(2, '0') +
+        '.' +
+        String(now.getMinutes()).padStart(2, '0') +
+        '.' +
+        String(now.getSeconds()).padStart(2, '0');
 
-      const dateStr = now.toLocaleDateString(undefined, dateOptions);
-      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
-
-      document.getElementById('current-date').textContent = dateStr;
-      document.getElementById('current-time').textContent = timeStr;
+      document.getElementById('date-text').textContent = dateStr;
+      document.getElementById('time-text').textContent = timeStr;
     }
 
-    // Initial render
+    function runTests() {
+      const dateEl = document.getElementById('date-text');
+      const timeEl = document.getElementById('time-text');
+
+      console.assert(dateEl, 'date-text element missing');
+      console.assert(timeEl, 'time-text element missing');
+
+      // Additional tests: ensure updateDateTime populates content
+      updateDateTime();
+      console.assert(dateEl.textContent !== '', 'date-text should not be empty after updateDateTime');
+      console.assert(timeEl.textContent !== '', 'time-text should not be empty after updateDateTime');
+    }
+
+    runTests();
+    // One more call for immediate render, then keep updating every second
     updateDateTime();
-    // Update every second
     setInterval(updateDateTime, 1000);
   </script>
 </body>
